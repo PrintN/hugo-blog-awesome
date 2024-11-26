@@ -44,7 +44,14 @@
 
 {{- if $image -}}
 <meta itemprop="image" content="{{ $image | absURL }}" />
-<meta property="og:image" content="{{ $image | absURL }}" />
+{{- $image := index .Params "image" -}}
+{{- if $image -}}
+  {{- $imageWebp := replace $image ".webp" "" -}}
+  {{- $imageStr := $imageWebp | default $image | string -}}
+  <meta property="og:image" content="{{ $imageStr | absURL }}">
+{{- else -}}
+  <meta property="og:image" content="{{ index .Site.Params "ogimage" | absURL }}">
+{{- end -}}
 <meta name="twitter:image" content="{{ $image | absURL }}" />
 <meta name="twitter:image:src" content="{{ $image | absURL }}" />
 {{- end -}}
